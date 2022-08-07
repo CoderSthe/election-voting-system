@@ -54,18 +54,48 @@ def register_voter():
         print(f"{voter_name} successfully registered as voter!\n")
         id_num = int(input("Enter Voter's ID Number: "))
 
+
+def cast_vote():
+    anc, da, eff, ifp, indie = 0,0,0,0,0
+    id_num = int(input("Enter ID number: "))
+    with open('registered_voters', 'r') as f:
+        contents = f.read()
+    if str(id_num) in contents:
+        print("Choose from the below options:")
+        print("1.\t African National Congress (ANC)")
+        print("2.\t Democratic Alliance (DA)")
+        print("3.\t Economic Freedom Fighters (EFF)")
+        print("4.\t Inkatha Freedom Party (IFP)")
+        print("5.\t Independent Candidate")
+        print()
+        user_choice = int(input())
+        if user_choice == 1:
+            anc += 1
+        elif user_choice == 2:
+            da +=1
+        elif user_choice == 3:
+            eff += 1
+        elif user_choice == 4:
+            ifp += 1
+        elif user_choice == 5:
+            indie += 1
+
+
 def main():
     print("Select Menu Option:")
     print("1.\t Register Candidate")
     print("2.\t Register Voter")
+    print("3.\t Cast Vote")
     print()
     user_choice = int(input())
-    assert user_choice == 1 or user_choice == 2, "Inavlid selection made"
+    assert user_choice == 1 or user_choice == 2 or user_choice == 3, "Inavlid selection made"
 
     if user_choice == 1:
         register_candidate()
-    else:
+    elif user_choice == 2:
         register_voter()
+    else:
+        cast_vote()
 
 
 main()
