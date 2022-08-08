@@ -3,3 +3,8 @@
 3 - Economic Freedom Fighters (EFF)
 4 - Inkatha Freedom Party (IFP)
 5 - Independent Candidates
+6 - Congress of the People (COPE)
+7 - Freedom Front Plus (FFP)
+8 - Pan Africanist Congress (PAC)
+9 - United Democratic Movement (UDM)
+10 - African Transformation Movement (ATM)
