@@ -1,23 +1,12 @@
-POLITICAL_PARTY = {
-    1: "African National Congress (ANC)",
-    2: "Democratic Alliance (DA)",
-    3: "Economic Freedom Fighters (EFF)",
-    4: "Inkatha Freedom Party (IFP)",
-    5: "Independent Candidate"
-}
-
-
 def display_parties():
-    print("1.\t African National Congress (ANC)")
-    print("2.\t Democratic Alliance (DA)")
-    print("3.\t Economic Freedom Fighters (EFF)")
-    print("4.\t Inkatha Freedom Party")
-    print("5.\t Independent Candidate")
-    print()
+    with open('political_parties.txt') as f:
+        contents = f.read()
+        print(contents)
+        print()
 
 
 def display_ballot_choice():
-    print("1.\t Local Elections")
+    print("1.\t Provincial Elections")
     print("2.\t National Elections")
     print()
 
@@ -26,7 +15,7 @@ def register_candidate():
     """This function registers a leader name who wants to
     participate in the elections.
     It also establishes whether the candidate intends
-    running for local or national elections."""
+    running for provincial or national elections."""
     
     reg_num = int(input("How many candidates are being registered? "))
     for i in range(reg_num):
@@ -37,14 +26,14 @@ def register_candidate():
 
         candidate_party = POLITICAL_PARTY.get(user_choice)
         candidate_name = input("Enter Candidate Name: ")
-        print("Is candidate contesting for Local or National elections? ")
+        print("Is candidate contesting for Provincial or National elections? ")
         display_ballot_choice()
     
         user_choice = int(input())
         assert user_choice == 1 or user_choice == 2, "Invalid selection made."
 
         if user_choice == 1:
-            ballot_contest = "Local"
+            ballot_contest = "Provincial"
         else:
             ballot_contest = "National"
         print()
@@ -53,6 +42,20 @@ def register_candidate():
             f.write(f"{candidate_name} - {candidate_party} - {ballot_contest}\n")
 
         print(f"Candidate {i + 1} successfully registered!\n")
+
+
+def view_prov_candidates():
+    with open('registered_candidates.txt') as f:
+        for line in f:
+            if "Provincial" in line:
+                print(line)
+
+
+def view_nat_candidates():
+    with open('registered_candidates.txt') as f:
+        for line in f:
+            if "National" in line:
+                print(line)
 
 
 def register_voter():
@@ -64,7 +67,7 @@ def register_voter():
     while id_num != 0:
         voter_name = input("Enter Voter Name: ")
 
-        with open('registered_voters', 'a') as f:
+        with open('registered_voters.txt', 'a') as f:
             f.write(f"{voter_name} - {id_num}\n")
 
         print(f"{voter_name} successfully registered as voter!\n")
@@ -76,16 +79,16 @@ def cast_vote():
     results in a text file."""
 
     id_num = int(input("Enter ID number: "))
-    with open('registered_voters', 'r') as f:
+    with open('registered_voters.txt', 'r') as f:
         contents = f.read()
 
     if str(id_num) in contents:
-        print("Is vote for Local or National ballot:")
+        print("Is vote for Provincial or National ballot:")
         display_ballot_choice()
         user_choice = int(input())
         assert user_choice == 1 or user_choice == 2, "Invalid selection made."
         if user_choice == 1:
-            ballot_choice = "Local"
+            ballot_choice = "Provincial"
         else:
             ballot_choice = "National"
         print("Choose political party:")
@@ -107,16 +110,27 @@ def main():
     print("1.\t Register Candidate")
     print("2.\t Register Voter")
     print("3.\t Cast Vote")
+    print("4.\t View Provincial Candidates")
+    print("5\t View National Candidates")
     print()
     user_choice = int(input())
-    assert user_choice == 1 or user_choice == 2 or user_choice == 3, "Invalid selection made."
+    assert user_choice == 1 or user_choice == 2 or user_choice == 3\
+        or user_choice == 4 or user_choice == 5, "Invalid selection made."
 
     if user_choice == 1:
         register_candidate()
     elif user_choice == 2:
         register_voter()
-    else:
+    elif user_choice == 3:
         cast_vote()
+    elif user_choice == 4:
+        view_prov_candidates()
+    elif user_choice == 5:
+        view_nat_candidates()
 
-
+POLITICAL_PARTY = {}
+with open('political_parties.txt') as f:
+    for line in f:
+        (key, val) = line.strip().split(' - ')
+        POLITICAL_PARTY[int(key)] = val
 main()
