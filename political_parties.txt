@@ -1,0 +1,5 @@
+1 - African National Congress (ANC)
+2 - Democratic Alliance (DA)
+3 - Economic Freedom Fighters (EFF)
+4 - Inkatha Freedom Party (IFP)
+5 - Independent Candidates

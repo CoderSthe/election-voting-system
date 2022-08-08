@@ -1,19 +1,8 @@
-POLITICAL_PARTY = {
-    1: "African National Congress (ANC)",
-    2: "Democratic Alliance (DA)",
-    3: "Economic Freedom Fighters (EFF)",
-    4: "Inkatha Freedom Party (IFP)",
-    5: "Independent Candidate"
-}
-
-
 def display_parties():
-    print("1.\t African National Congress (ANC)")
-    print("2.\t Democratic Alliance (DA)")
-    print("3.\t Economic Freedom Fighters (EFF)")
-    print("4.\t Inkatha Freedom Party")
-    print("5.\t Independent Candidate")
-    print()
+    with open('political_parties.txt') as f:
+        contents = f.read()
+        print(contents)
+        print()
 
 
 def display_ballot_choice():
@@ -118,5 +107,9 @@ def main():
     else:
         cast_vote()
 
-
+POLITICAL_PARTY = {}
+with open('political_parties.txt') as f:
+    for line in f:
+        (key, val) = line.strip().split(' - ')
+        POLITICAL_PARTY[int(key)] = val
 main()
