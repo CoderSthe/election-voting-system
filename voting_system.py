@@ -1,4 +1,40 @@
+def verify_login():
+    """This function verifies the username and password of a login attempt."""
+
+    username_list = []
+    password_list = []
+    username = input("Enter username: ")
+    password = input("Enter password: ")
+
+    with open('user.txt') as f:
+        for line in f:
+            f_username, f_password = line.split(', ')
+            f_password = f_password.strip()
+            username_list.append(f_username)
+            password_list.append(f_password)
+    user_data = dict(zip(username_list, password_list))
+
+    while not user_data.get(username) or password != user_data[username]:
+        print("Your username or password is incorrect. Please try again\n")
+        username = input("Enter username: ")
+        password = input("Enter password: ")
+    print("1.\t Register Candidate")
+    print("2.\t View Provincial Candidates")
+    print("3.\t View National Candidates")
+    print()
+    user_choice = int(input())
+    if user_choice == 1:
+        register_candidate()
+    elif user_choice == 2:
+        view_prov_candidates()
+    elif user_choice == 3:
+        view_nat_candidates()
+
+
 def display_parties():
+    """This function displays to screen all the registered political
+    parties participating in the elections."""
+
     with open('political_parties.txt') as f:
         contents = f.read()
         print(contents)
@@ -6,12 +42,16 @@ def display_parties():
 
 
 def display_ballot_choice():
+    """This function displays to screen the ballot options available for voters."""
+
     print("1.\t Provincial Elections")
     print("2.\t National Elections")
     print()
 
 
 def check_registration():
+    """This function verifies whether a given ID number has registered to vote."""
+
     id_num = int(input("Enter your ID number: "))
     with open('registered_voters.txt', 'r') as f:
         content = f.read()
@@ -20,6 +60,22 @@ def check_registration():
         print(f"{content[0]} is registered to vote.")
     else:
         print(f"ID Number {id_num} not registered to vote.")
+
+
+def register_voter():
+    """This function registers a voter who wants to cast their vote"""
+
+    id_num = int(input("Enter Voter's ID Number: "))
+    assert id_num == 0 or len(str(id_num)) == 13, "Invalid ID number given."
+
+    while id_num != 0:
+        voter_name = input("Enter Voter Name: ")
+
+        with open('registered_voters.txt', 'a') as f:
+            f.write(f"{voter_name} - {id_num}\n")
+
+        print(f"{voter_name} successfully registered as voter!\n")
+        id_num = int(input("Enter Voter's ID Number: "))
 
 
 def register_candidate():
@@ -56,6 +112,9 @@ def register_candidate():
 
 
 def view_prov_candidates():
+    """This function displays to screen a list of registered provincial
+    candidates for the elections."""
+
     with open('registered_candidates.txt') as f:
         for line in f:
             if "Provincial" in line:
@@ -63,26 +122,13 @@ def view_prov_candidates():
 
 
 def view_nat_candidates():
+    """This function displays to screen a list of registered national
+    candidates for the elections."""
+    
     with open('registered_candidates.txt') as f:
         for line in f:
             if "National" in line:
                 print(line)
-
-
-def register_voter():
-    """This function registers a voter who wants to cast their vote"""
-
-    id_num = int(input("Enter Voter's ID Number: "))
-    assert id_num == 0 or len(str(id_num)) == 13, "Invalid ID number given."
-
-    while id_num != 0:
-        voter_name = input("Enter Voter Name: ")
-
-        with open('registered_voters.txt', 'a') as f:
-            f.write(f"{voter_name} - {id_num}\n")
-
-        print(f"{voter_name} successfully registered as voter!\n")
-        id_num = int(input("Enter Voter's ID Number: "))
 
 
 def cast_vote():
@@ -120,37 +166,11 @@ def main():
     print("2.\t Check my registration status")
     print("3.\t Register to vote")
     print("4.\t Cast my vote")
+    print()
 
     user_choice = int(input())
     if user_choice == 1:
-        username_list = []
-        password_list = []
-        username = input("Enter username: ")
-        password = input("Enter password: ")
-
-        with open('user.txt') as f:
-            for line in f:
-                f_username, f_password = line.split(', ')
-                f_password = f_password.strip()
-                username_list.append(f_username)
-                password_list.append(f_password)
-        user_data = dict(zip(username_list, password_list))
-
-        while not user_data.get(username) or password != user_data[username]:
-            print("Your username or password is incorrect. Please try again\n")
-            username = input("Enter username: ")
-            password = input("Enter password: ")
-        print("1.\t Register Candidate")
-        print("2.\t View Provincial Candidates")
-        print("3.\t View National Candidates")
-
-        user_choice = int(input())
-        if user_choice == 1:
-            register_candidate()
-        elif user_choice == 2:
-            view_prov_candidates()
-        elif user_choice == 3:
-            view_nat_candidates()
+        verify_login()
     elif user_choice == 2:
         check_registration()
     elif user_choice == 3:
@@ -165,5 +185,5 @@ with open('political_parties.txt') as f:
         POLITICAL_PARTY[int(key)] = val
 
 
-        
+
 main()
