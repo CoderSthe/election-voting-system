@@ -11,6 +11,17 @@ def display_ballot_choice():
     print()
 
 
+def check_registration():
+    id_num = int(input("Enter your ID number: "))
+    with open('registered_voters.txt', 'r') as f:
+        content = f.read()
+        content = content.split(' - ')
+    if str(id_num) in content[1]:
+        print(f"{content[0]} is registered to vote.")
+    else:
+        print(f"ID Number {id_num} not registered to vote.")
+
+
 def register_candidate():
     """This function registers a leader name who wants to
     participate in the elections.
@@ -104,33 +115,55 @@ def cast_vote():
         print("ID number not registered to vote.")
     
 
-
 def main():
-    print("Select Menu Option:")
-    print("1.\t Register Candidate")
-    print("2.\t Register Voter")
-    print("3.\t Cast Vote")
-    print("4.\t View Provincial Candidates")
-    print("5\t View National Candidates")
-    print()
-    user_choice = int(input())
-    assert user_choice == 1 or user_choice == 2 or user_choice == 3\
-        or user_choice == 4 or user_choice == 5, "Invalid selection made."
+    print("1.\t Internal Employee Login")
+    print("2.\t Check my registration status")
+    print("3.\t Register to vote")
+    print("4.\t Cast my vote")
 
+    user_choice = int(input())
     if user_choice == 1:
-        register_candidate()
+        username_list = []
+        password_list = []
+        username = input("Enter username: ")
+        password = input("Enter password: ")
+
+        with open('user.txt') as f:
+            for line in f:
+                f_username, f_password = line.split(', ')
+                f_password = f_password.strip()
+                username_list.append(f_username)
+                password_list.append(f_password)
+        user_data = dict(zip(username_list, password_list))
+
+        while not user_data.get(username) or password != user_data[username]:
+            print("Your username or password is incorrect. Please try again\n")
+            username = input("Enter username: ")
+            password = input("Enter password: ")
+        print("1.\t Register Candidate")
+        print("2.\t View Provincial Candidates")
+        print("3.\t View National Candidates")
+
+        user_choice = int(input())
+        if user_choice == 1:
+            register_candidate()
+        elif user_choice == 2:
+            view_prov_candidates()
+        elif user_choice == 3:
+            view_nat_candidates()
     elif user_choice == 2:
-        register_voter()
+        check_registration()
     elif user_choice == 3:
-        cast_vote()
+        register_voter()
     elif user_choice == 4:
-        view_prov_candidates()
-    elif user_choice == 5:
-        view_nat_candidates()
+        cast_vote()
 
 POLITICAL_PARTY = {}
 with open('political_parties.txt') as f:
     for line in f:
         (key, val) = line.strip().split(' - ')
         POLITICAL_PARTY[int(key)] = val
+
+
+        
 main()
