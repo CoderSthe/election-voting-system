@@ -1,0 +1,9 @@
+1 - Gauteng
+2 - Limpopo
+3 - North West
+4 - Kwazulu-Natal
+5 - Eastern Cape
+6 - Western Cape
+7 - Northern Cape
+8 - Mpumalanga
+9 - Free State
